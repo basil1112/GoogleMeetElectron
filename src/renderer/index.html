@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Google Meet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet" />
+  <link href="css/index.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="titlebar">
+    <div class="app-icon"></div>
+    <button id="home" style="color: white;">
+      ☰
+    </button>
+    <div class="title">Google Meet</div>
+
+    <div class="controls">
+      <button id="meethome">
+        <img src="assets/home.svg" />
+      </button>
+      <button id="minimize">
+        <img src="assets/window-minimize.svg" />
+      </button>
+      <button id="maximize">
+        <img src="assets/window-maximize.svg" />
+      </button>
+      <button id="restore">
+        <img src="assets/window-restore.svg" />
+      </button>
+      <button id="close">
+        <img src="assets/times.svg" />
+      </button>
+    </div>
+  </div>
+
+  <div id="mySidebar" class="sidebar">
+
+    <div id="people_outer">
+
+      <audio src="./assets/simple_marimba.mp3" id="player_controller" style="display: none;" controls></audio>
+
+      <div class="wrapper">
+        <article onclick="goHome()" class="main" style="min-height: 50px;text-align: center !important;">
+          Home
+        </article>
+      </div>
+
+      <div class="wrapper">
+        <article onclick="showAddFriends()" class="main" style="min-height: 50px;text-align: center !important;">
+          Add Friends
+        </article>
+      </div>
+      <div id='user'>
+        <!--     <div class="wrapper" id="basil_sujith">
+          <aside class="aside aside-1">
+            <img src="assets/sujith.jpg" />
+          </aside>
+          <article class="main">
+            <div class="name">User name</div>
+            <div class="mood">User mood</div>
+          </article>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+  <script src="scripts/window.js"></script>
+</body>
+
+</html>
