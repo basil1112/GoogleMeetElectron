@@ -1,4 +1,5 @@
 
+
 // Initialize Firebase
 var config = {
   apiKey: "AIzaSyDiKlBi25FUNTEUdYTHCPtfoZky3_93s3A",
@@ -10,7 +11,7 @@ var config = {
 };
 firebase.initializeApp(config);
 
-let logged_user = undefined;
+
 
 const homeButton = document.getElementById("home");
 const googleMeetHome = document.getElementById("meethome");
@@ -82,16 +83,6 @@ ipc.on("ring_now", () => {
   audio.play();
 });
 
-ipc.on("ring_stop", () => {
-  var audio = document.getElementById("player_controller");
-  audio.pause();
-});
-
-
-ipc.on('set_loggedUser', (data) => {
-  logged_user = Object.freeze(data);
-});
-
 ipc.on('set_friends', (data) => {
   try {
     if (data) {
@@ -112,7 +103,7 @@ ipc.on('set_friends', (data) => {
       userListDiv.innerHTML = html;
 
 
-      /*      var db_ref = firebase.database().ref('/users');
+      /*   var db_ref = firebase.database().ref('/users');
            userData.forEach(element => {
              let userId = db_ref.push().getKey();
              var user = new Object();
@@ -133,52 +124,27 @@ ipc.on('set_friends', (data) => {
 
 
 
-function showAddFriends() {
+function registerNewUser() {
 
-  ipcScope.send("open_addFriends");
+  const name = document.getElementById('txtName').value;
+  const googleUrl = document.getElementById('txtGUrl').value;
+  const email = document.getElementById('txtEmail').value;
+
+  var db_ref = firebase.database().ref('/users');
+
+  let userId = db_ref.push().getKey();
+  var user = new Object();
+  user.id = userId;
+  user.name = name;
+  user.email = email
+  user.meetingUrl = googleUrl;
+  user.status = true;
+  user.notify = false;
+  user.message = "";
+  db_ref.child(userId).set(user);
+  var _data = {
+    data: user
+  }
+  ipc.send("set_logged_user", _data);
+  return false;
 }
-
-async function callThisFriend(url, id) {
-
-  var currentUserReference = firebase.database().ref('users/' + id);
-  currentUserReference.once('value', (snapshot) => {
-    const data = snapshot.val();
-    if (data.status) {
-
-      var postData = {
-        notify:true,
-        status:false,
-        message:`${logged_user.name} calling you`
-      };
-
-      currentUserReference.update(postData);
-
-      var _data = {
-        data: url
-      }
-      ipcScope.send("call_friend", _data);
-    }
-    else {
-      alert("user busy");
-    }
-  });
-
-
-
-
-
-  writeUserData(url, id);
-
-}
-
-
-function writeUserData(message, id) {
-  var db_ref = firebase.database().ref('/user/' + id);
-  db_ref.push({
-    user_id: user_id,
-    message: "Basil Calling Sujith"
-  });
-}
-
-
-

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Google Meet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet" />
+  <link href="css/register.css" rel="stylesheet" />
+</head>
+
+<body>
+
+  <div class="titlebar">
+    <div class="app-icon"></div>
+    <button id="home" style="color: white;">
+      ☰
+    </button>
+    <div class="title">Google Meet</div>
+
+    <div class="controls">
+      <button id="meethome">
+        <img src="assets/home.svg" />
+      </button>
+      <button id="minimize">
+        <img src="assets/window-minimize.svg" />
+      </button>
+      <button id="maximize">
+        <img src="assets/window-maximize.svg" />
+      </button>
+      <button id="restore">
+        <img src="assets/window-restore.svg" />
+      </button>
+      <button id="close">
+        <img src="assets/times.svg" />
+      </button>
+    </div>
+  </div>
+  <div class="sectionmain">
+    <div class="container">
+      <div class="title">Registration</div>
+      <div class="content">
+        <form action="#">
+          <div class="user-details">
+            <div class="input-box">
+              <span class="details">Full Name</span>
+              <input type="text" id="txtName" placeholder="Enter your name" required>
+            </div>
+            <div class="input-box">
+              <span class="details">Email</span>
+              <input type="text" id="txtEmail" placeholder="Enter your email" required>
+            </div>
+            <div class="input-box">
+              <span class="details">Password</span>
+              <input type="text" id="txtPassword" placeholder="Enter your password" required>
+            </div>
+            <div class="input-box">
+              <span class="details">Meeting Url</span>
+              <input type="text" id="txtGUrl" placeholder="Enter an instant meeting url" required>
+            </div>
+          </div>
+          <div class="button">
+            <input type="submit" value="Register" onclick="return registerNewUser()">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+  <script src="scripts/register.js"></script>
+</body>
+
+</html>

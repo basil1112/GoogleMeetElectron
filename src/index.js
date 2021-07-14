@@ -1,5 +1,6 @@
 /* Modules to control application life and create native browser window */
 const { app, BrowserWindow, systemPreferences, session } = require("electron");
+const Store = require('electron-store');
 const {
   hasScreenCapturePermission,
   hasPromptedForPermission,
@@ -12,7 +13,7 @@ const {
 
 require("./main/cpuinfo");
 require("./main/shortcut");
-const { createMainWindow } = require("./main/window");
+const { createMainWindow, createLaunchPage } = require("./main/window");
 
 if (process.platform !== "win32" && process.platform !== "darwin") {
   app.commandLine.appendSwitch("enable-transparent-visuals");
@@ -21,6 +22,10 @@ if (process.platform !== "win32" && process.platform !== "darwin") {
 }
 
 app.whenReady().then(async () => {
+
+  const store = new Store();
+
+
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     if (process.platform === "win32") {
       details.requestHeaders["User-Agent"] = WIN_USERAGENT;
@@ -43,7 +48,15 @@ app.whenReady().then(async () => {
       hasScreenCapturePermission();
     }
   }
-  createMainWindow();
+  console.log("SSSSSS" + store.get('alreadyloggedin'));
+  //store.clear();
+
+  if (store.get('alreadyloggedin') == true) {
+    createMainWindow();
+  } else {
+    console.log("SHOW REGISTER PAGE");
+    createLaunchPage();
+  }
 });
 
 app.on("window-all-closed", function () {
@@ -52,7 +65,12 @@ app.on("window-all-closed", function () {
 
 app.on("activate", function () {
   if (BrowserWindow.getAllWindows().length === 0) {
-    createMainWindow();
+   
+    if (store.get('alreadyloggedin') == true) {
+      createMainWindow();
+    } else {
+      console.log("SHOW REGISTER PAGE");
+    }
   } else {
     global.mainWindow && global.mainWindow.focus();
   }
