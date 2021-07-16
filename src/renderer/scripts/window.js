@@ -52,12 +52,15 @@ function goHome() {
 
 minimizeButton.addEventListener("click", () => {
   ipc.send("window.minimize");
+  homeButton.click();
 });
 maximizeButton.addEventListener("click", () => {
   ipc.send("window.maximize");
+  homeButton.click();
 });
 restoreButton.addEventListener("click", () => {
   ipc.send("window.restore");
+  homeButton.click();
 });
 closeButton.addEventListener("click", () => {
   ipc.send("window.close");
@@ -99,14 +102,30 @@ ipc.on('set_friends', (data) => {
       let userData = JSON.parse(JSON.stringify(data));
       let html = ``;
       userData.forEach(element => {
-        html = html + `<div class="wrapper" id="basil_sujith" onclick="callThisFriend('${element.meetingUrl}','${element.id}')" >
+        /* html = html + `<div class="wrapper" id="basil_sujith" onclick="callThisFriend('${element.meetingUrl}','${element.id}')" >
         <aside class="aside aside-1">
           <img src="assets/avathar.png" />
         </aside>
         <article class="main">
           <div class="name">${element.name}</div>
         </article>
-      </div>`;
+      </div>`; */
+
+
+        html = html + `
+      <div class="friend-drawer friend-drawer--onhover" onclick="callThisFriend('${element.meetingUrl}','${element.id}')">
+                        <img class="profile-image"
+                            src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/filip.jpg" alt="">
+                        <div class="text">
+                            <h6>${element.name}</h6>
+                            <p class="txt_muted_all">${element.email}</p>
+                        </div>
+                        <span class="${element.status ? 'logged-in' : 'logged-out'}">●</span>
+                    </div>
+                    <hr>
+      `;
+
+
       });
 
       userListDiv.innerHTML = html;
@@ -146,9 +165,9 @@ async function callThisFriend(url, id) {
     if (data.status) {
 
       var postData = {
-        notify:true,
-        status:false,
-        message:`${logged_user.name} calling you`
+        notify: true,
+        status: false,
+        message: `${logged_user.name} calling you`
       };
 
       currentUserReference.update(postData);

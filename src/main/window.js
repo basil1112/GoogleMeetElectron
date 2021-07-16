@@ -137,7 +137,7 @@ function createMainWindow() {
     },
   }));
   mainWindowState.manage(mainWindow);
-  mainWindow.loadFile(path.join(__dirname, "..", "renderer", "index.html"));
+  mainWindow.loadFile(path.join(__dirname, "..", "renderer", "index_chat.html"));
   //mainWindow.webContents.openDevTools();
   mainWindow.webContents.on("did-finish-load", () => {
 
