@@ -20,6 +20,7 @@ const {
   screen,
   app,
   Notification,
+  remote,
   dialog
 } = require("electron");
 
@@ -74,26 +75,49 @@ function showNotificationSticky(window, messageToShow) {
     message: `${messageToShow}`
   };
 
-  dialog.showMessageBox(null, options).then((response) => {
+  const outTimer = setTimeout(() => {
+    var updateStatus = firebase.database().ref('users/' + loggedUserData.id);
+    var postData = {
+      notify: false,
+      status: true,
+      message: `Available`
+    };
+    updateStatus.update(postData);
+    window.webContents.send('ring_stop');
+    if (googleMeetView) {
+      googleMeetView.webContents.loadURL("https://meet.google.com/");
+    }
+
+  }, 20000);
+
+  dialog.showMessageBox(new BrowserWindow({
+    show: false,
+    alwaysOnTop: true
+  }), options).then((response) => {
 
     if (response.response == 0) {
       //accepted
+      clearTimeout(outTimer);
       window.webContents.send('ring_stop');
-      if(googleMeetView){
+      if (googleMeetView) {
         googleMeetView.webContents.loadURL(loggedUserData.meetingUrl);
       }
     }
     else {
       //rejected
+      clearTimeout(outTimer);
       var updateStatus = firebase.database().ref('users/' + loggedUserData.id);
       var postData = {
-        notify:false,
-        status:true,
-        message:`Available`
+        notify: false,
+        status: true,
+        message: `Available`
       };
 
       updateStatus.update(postData);
       window.webContents.send('ring_stop');
+      if (googleMeetView) {
+        googleMeetView.webContents.loadURL("https://meet.google.com/");
+      }
 
     }
 
@@ -103,13 +127,13 @@ function showNotificationSticky(window, messageToShow) {
 
 }
 
-function updateStatus(){
+function updateStatus() {
 
   var updateStatus = firebase.database().ref('users/' + loggedUserData.id);
   var postData = {
-    notify:false,
-    status:true,
-    message:`Available`
+    notify: false,
+    status: true,
+    message: `Available`
   };
   updateStatus.update(postData);
 
@@ -150,9 +174,9 @@ function createMainWindow() {
     firebase.database().ref('users').get().then((snapshot) => {
       if (snapshot.exists()) {
         snapshot.forEach(function (childSnapshot) {
-           if (childSnapshot.val().id !== loggedUserData.id) {
-              userData.push(childSnapshot.val());
-            }
+          if (childSnapshot.val().id !== loggedUserData.id) {
+            userData.push(childSnapshot.val());
+          }
         });
         mainWindow.webContents.send('set_loggedUser', loggedUserData);
         mainWindow.webContents.send('set_friends', userData);
@@ -184,7 +208,7 @@ function createMainWindow() {
 
 
 
- googleMeetView = (global.googleMeetView = new BrowserView({
+  googleMeetView = (global.googleMeetView = new BrowserView({
     webPreferences: {
       preload: path.join(
         __dirname,
@@ -197,6 +221,7 @@ function createMainWindow() {
   }));
   mainWindow.setBrowserView(googleMeetView);
   googleMeetView.webContents.loadURL(GOOGLE_MEET_URL);
+  //googleMeetView.webContents.openDevTools();
   googleMeetView.setBounds({
     x: 0,
     y: 40,
@@ -204,10 +229,10 @@ function createMainWindow() {
     height: mainWindow.getBounds().height - 40,
   });
   googleMeetView.webContents.on("did-finish-load", () => {
-    
-    if(googleMeetView.webContents.getURL() == "https://meet.google.com/"){
+
+    if (googleMeetView.webContents.getURL() == "https://meet.google.com/") {
       console.log("RESET RESET RESET");
-      if(loggedUserData){
+      if (loggedUserData) {
         updateStatus();
       }
     }

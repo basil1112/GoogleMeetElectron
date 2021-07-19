@@ -66,9 +66,9 @@ const { getScreenId } = require("./screen");
 
   window.chrome.runtime.sendMessage = sendMessage;
 
-  async function waitForScreenShareToStop() {
+  async function waitForScreenShareToStop() { 
     await waitForElement(`[jsname="FwVQ4"] [jsname="v2aOce"]`);
-    await waitForElementToDestroy(`[jsname="FwVQ4"] [jsname="v2aOce"]`);
+    await waitForElementToDestroy(`[jsname="FwVQ4"] [jsname="v2aOce"]`); 
     ipcRenderer.send("window.screenshare.hide");
   }
 

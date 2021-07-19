@@ -88,6 +88,7 @@ ipc.on("ring_now", () => {
 ipc.on("ring_stop", () => {
   var audio = document.getElementById("player_controller");
   audio.pause();
+  audio.currentTime = 0;
 });
 
 
@@ -114,8 +115,7 @@ ipc.on('set_friends', (data) => {
 
         html = html + `
       <div class="friend-drawer friend-drawer--onhover" onclick="callThisFriend('${element.meetingUrl}','${element.id}')">
-                        <img class="profile-image"
-                            src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/filip.jpg" alt="">
+                <div class="profileImage">${Array.from(element.name)[0]}</div>
                         <div class="text">
                             <h6>${element.name}</h6>
                             <p class="txt_muted_all">${element.email}</p>

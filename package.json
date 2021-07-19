@@ -1,7 +1,7 @@
 {
   "name": "google-meet-desktop",
-  "version": "1.2.0",
-  "description": "An unofficial desktop app for Google Meet",
+  "version": "1.0.0",
+  "description": "An unofficial desktop app for Google Meet for zoimeet user",
   "main": "./src/index.js",
   "scripts": {
     "start": "electron .",
@@ -16,11 +16,12 @@
     "tutorial",
     "demo"
   ],
-  "author": "Arjun Ganesan",
+  "author": "Basil Jose",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^8.2.4",
-    "electron-builder": "^22.6.0"
+    "electron": "^8.5.5",
+    "electron-builder": "^22.6.0",
+    "electron-packager": "^15.2.0"
   },
   "dependencies": {
     "@google-cloud/firestore": "^4.13.1",
@@ -30,7 +31,7 @@
     "mac-screen-capture-permissions": "^1.1.0"
   },
   "build": {
-    "appId": "com.arjunganesan.googleMeet",
+    "appId": "com.basilzoimeet.googleMeet",
     "productName": "Google Meet",
     "mac": {
       "extendInfo": {

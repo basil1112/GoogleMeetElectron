@@ -1,7 +1,7 @@
 const canvas = new fabric.Canvas("canvas", { isDrawingMode: true });
 canvas.setWidth(window.innerWidth);
 canvas.setHeight(window.innerHeight);
-canvas.freeDrawingBrush.color = "#47F02F";
+canvas.freeDrawingBrush.color = "#D54C4C";
 canvas.freeDrawingBrush.width = 5;
 canvas.freeDrawingBrush.shadow = new fabric.Shadow({
   blur: 5 || 0,
